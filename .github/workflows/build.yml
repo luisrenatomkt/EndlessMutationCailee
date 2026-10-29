@@ -1,0 +1,49 @@
+name: Build EndlessMutationCailee
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar código do repositório
+        uses: actions/checkout@v4
+
+      - name: Instalar Java 8
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '8'
+
+      - name: Configurar Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Compilar o mod
+        run: gradle --no-daemon build
+
+      - name: Verificar arquivo JAR
+        shell: bash
+        run: |
+          set -e
+          JAR="$(find build/libs -maxdepth 1 -name '*.jar' -type f | head -n 1)"
+          if [ -z "$JAR" ]; then
+            echo "ERRO: nenhum arquivo JAR foi encontrado."
+            exit 1
+          fi
+          if [ ! -s "$JAR" ]; then
+            echo "ERRO: o arquivo JAR está vazio."
+            exit 1
+          fi
+          echo "JAR criado: $JAR"
+
+      - name: Disponibilizar JAR para download
+        uses: actions/upload-artifact@v4
+        with:
+          name: EndlessMutationCailee-1.8.9
+          path: build/libs/*.jar
+          if-no-files-found: error
