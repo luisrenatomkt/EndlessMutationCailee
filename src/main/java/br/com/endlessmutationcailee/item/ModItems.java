@@ -10,7 +10,7 @@ public final class ModItems {
     private ModItems() {}
 
     public static void register() {
-        caileeSummoner = new ItemCaileeSummoner().setUnlocalizedName("cailee_summoner").setTextureName(EndlessMutationCailee.MODID + ":cailee_summoner");
+        caileeSummoner = new ItemCaileeSummoner().setUnlocalizedName("cailee_summoner");
         GameRegistry.registerItem(caileeSummoner, "cailee_summoner");
     }
 }

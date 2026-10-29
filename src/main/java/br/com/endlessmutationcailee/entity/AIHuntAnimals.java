@@ -23,7 +23,7 @@ public class AIHuntAnimals extends EntityAIBase {
         EntityAnimal best = null;
         double bestDistance = Double.MAX_VALUE;
         for (EntityAnimal animal : list) {
-            if (animal == cailee || animal.isDead || animal.getHealth() <= 0.0F) continue;
+            if (animal.isDead || animal.getHealth() <= 0.0F) continue;
             double d = cailee.getDistanceSqToEntity(animal);
             if (d < bestDistance) { best = animal; bestDistance = d; }
         }
