@@ -1,0 +1,16 @@
+[
+  {
+    "modid": "endlessmutationcailee",
+    "name": "Endless Mutation: Cailee",
+    "description": "NPC imortal que caça animais e evolui fisicamente após consumi-los.",
+    "version": "${version}",
+    "mcversion": "${mcversion}",
+    "url": "",
+    "updateUrl": "",
+    "authorList": ["EndlessMutationCailee"],
+    "credits": "Projeto inicial gerado com assistência de IA",
+    "logoFile": "",
+    "screenshots": [],
+    "dependencies": []
+  }
+]
