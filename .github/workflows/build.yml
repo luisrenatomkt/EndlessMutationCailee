@@ -20,8 +20,15 @@ jobs:
           distribution: temurin
           java-version: '8'
 
-      - name: Configurar Gradle
+      - name: Configurar Gradle 2.7
         uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: '2.7'
+
+      - name: Verificar versões
+        run: |
+          java -version
+          gradle --version
 
       - name: Compilar o mod
         run: gradle --no-daemon build
@@ -31,14 +38,17 @@ jobs:
         run: |
           set -e
           JAR="$(find build/libs -maxdepth 1 -name '*.jar' -type f | head -n 1)"
+
           if [ -z "$JAR" ]; then
             echo "ERRO: nenhum arquivo JAR foi encontrado."
             exit 1
           fi
+
           if [ ! -s "$JAR" ]; then
             echo "ERRO: o arquivo JAR está vazio."
             exit 1
           fi
+
           echo "JAR criado: $JAR"
 
       - name: Disponibilizar JAR para download
