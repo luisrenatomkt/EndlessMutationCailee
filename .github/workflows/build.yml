@@ -1,57 +1,29 @@
 name: Build EndlessMutationCailee
-
 on:
   push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Baixar código do repositório
+      - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Instalar Java 8
+      - name: Setup Java 8
         uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '8'
-
-      - name: Configurar Gradle 2.7
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          gradle-version: '2.7'
-
-      - name: Verificar versões
-        run: |
-          java -version
-          gradle --version
-
-      - name: Compilar o mod
-        run: gradle --no-daemon build
-
-      - name: Verificar arquivo JAR
+      - name: Install Gradle 2.7 (compatível com ForgeGradle 2.1)
         shell: bash
         run: |
           set -e
-          JAR="$(find build/libs -maxdepth 1 -name '*.jar' -type f | head -n 1)"
-
-          if [ -z "$JAR" ]; then
-            echo "ERRO: nenhum arquivo JAR foi encontrado."
-            exit 1
-          fi
-
-          if [ ! -s "$JAR" ]; then
-            echo "ERRO: o arquivo JAR está vazio."
-            exit 1
-          fi
-
-          echo "JAR criado: $JAR"
-
-      - name: Disponibilizar JAR para download
+          curl -L --fail --retry 3 https://services.gradle.org/distributions/gradle-2.7-bin.zip -o /tmp/gradle-2.7-bin.zip
+          unzip -q /tmp/gradle-2.7-bin.zip -d /tmp
+          /tmp/gradle-2.7/bin/gradle --version
+      - name: Build mod
+        run: /tmp/gradle-2.7/bin/gradle --no-daemon clean build
+      - name: Upload JAR
         uses: actions/upload-artifact@v4
         with:
           name: EndlessMutationCailee-1.8.9
